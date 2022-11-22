@@ -7,24 +7,21 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-      - name: Clone repo
-        uses: actions/checkout@v1
+      - name: cloning repo
+        uses: actions/checkout@v3
         with:
           repository: The3ven/Node_whatsapp_bot
           token: ${{ secrets.ACCESS_TOKEN }}
-
+          path: Node_whatsapp_bot
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-
         with:
           node-version: 16.18.0
-      - run: bash run_bot.sh
-      
-      
+      - run: |
+              cd Node_whatsapp_bot
+              bash run_bot.sh
       - name: Loop workflow
         continue-on-error: true
         run: |
