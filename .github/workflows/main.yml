@@ -1,0 +1,47 @@
+name: Node.js CI
+
+on: [push]
+env:
+ username: The3ven
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v1
+        with:
+          repository: The3ven/Node_whatsapp_bot
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+
+        with:
+          node-version: 16.18.0
+      - run: bash run_bot.sh
+      
+      
+      - name: Loop workflow
+        continue-on-error: true
+        run: |
+              git config --global user.name "$username"
+              git config --global user.email "the3ven@gmail.com"
+              sudo apt install expect -y
+              git clone https://github.com/$username/looper loop
+              cd loop
+              echo "1" >> loop.txt
+              git add loop.txt
+              git commit -m "Workflow : Loop"
+              expect -c "
+              spawn git push -f 
+              expect \"Username\"
+              send \"${{ secrets.GHUSER }}\r\"
+              expect \"Password\"
+              send \"${{ secrets.ACCESS_TOKEN }}\r\"
+              expect \"main -> main\"
+              set timeout -10
+              interact"
