@@ -39,7 +39,7 @@ jobs:
               sudo apt install expect -y
               git clone https://github.com/$username/looper loop
               cd loop
-              echo $(( RANDOM - ( RANDOM % RANDOM ) )) > looper.txt
+              echo $(( RANDOM - ( RANDOM % RANDOM ) )) > loop.txt
               git add loop.txt
               git commit -m "Workflow : Loop"
               expect -c "
