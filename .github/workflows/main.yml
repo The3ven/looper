@@ -1,6 +1,11 @@
 name: Node.js CI
 
-on: [push]
+on: 
+  push:
+    branches: [ master ]
+    paths-ignore: 'README.md'
+  workflow_dispatch:
+
 env:
  username: The3ven
 
@@ -19,9 +24,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.18.0
-      - run: |
-              cd Node_whatsapp_bot
-              bash run_bot.sh
+      - name: running bot
+        timeout-minutes: 340
+        continue-on-error: true
+        run: |
+            cd Node_whatsapp_bot
+            npm i
+            node bot.js
       - name: Loop workflow
         continue-on-error: true
         run: |
@@ -30,7 +39,7 @@ jobs:
               sudo apt install expect -y
               git clone https://github.com/$username/looper loop
               cd loop
-              echo "1" >> loop.txt
+              echo $(( RANDOM - ( RANDOM % RANDOM ) )) > looper.txt
               git add loop.txt
               git commit -m "Workflow : Loop"
               expect -c "
