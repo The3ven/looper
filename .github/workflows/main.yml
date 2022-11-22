@@ -30,7 +30,7 @@ jobs:
         run: |
             cd Node_whatsapp_bot
             npm i
-            node bot.js
+            bash run_bot.sh
       - name: Loop workflow
         continue-on-error: true
         run: |
